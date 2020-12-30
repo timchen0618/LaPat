@@ -1,0 +1,209 @@
+pure_seq2seq:
+  batch_size: 64
+  num_epoch: 20
+  warmup_steps: 8000
+  src_max_len: 40
+  max_len: 20
+  print_every_step: 2000
+  valid_every_step: 50000
+  lr: 50
+  lr_init: 1.0e-3
+  noam_decay: False
+  optimizer: adam
+
+  data_path: /share/home/timchen0618/data/weibo-stc/weibo_utf8/final_data_with_pos/align_data
+  corpus: pos_unprocessed_498_train_align.tsv 
+  test_corpus: new_data_test_498_align.tsv
+  valid_corpus: pos_unprocessed_498_dev_align.tsv 
+  # valid_corpus: val.train.tsv
+  pos_dict_path: pos_unprocessed_structure_dict.pkl
+  dict: 5w_pos.json
+  pos_masking: False
+  pretrain_utils: False
+  model:
+    pointer_gen: False
+    dropout: 0.3
+    num_layer: 6
+    d_model: 512
+    d_ff: 2048
+    h: 8
+    tie_weights: False
+  eval:
+    beam_size: 3
+    block_ngram: 0
+
+
+seq2seq:
+  batch_size: 128
+  num_epoch: 25
+  warmup_steps: 8000
+  src_max_len: 50
+  max_len: 20
+  print_every_step: 500
+  valid_every_step: 30000
+  lr: 1
+  lr_init: 1.0e-6
+  noam_decay: True
+  optimizer: adam
+
+  #data_path: /share/home/timchen0618/data/weibo-stc/weibo_utf8/final_data_with_pos/post_data
+  data_path: /share/home/timchen0618//data/weibo-stc/weibo_utf8/final_data_with_pos/align_data/
+  corpus: pos_unprocessed_10000_train_meteor_post.tsv
+  #test_corpus: 2stage.genpos.drop03.test
+  #test_corpus: new_data_test_498_align.tsv
+  #test_corpus: out.txt
+  test_corpus: ../../../../../transformer_sampler/out2stage_genpos.txt
+  #test_corpus: ../../../../../transformer_sampler/test_2ndstage_top10.tsv
+  valid_corpus: pos_unprocessed_10000_dev_meteor_post.tsv 
+  # valid_corpus: val.sm.tsv
+  #pos_dict_path: pos_unprocessed_structure_dict.pkl
+  pos_dict_path: ../meteor_data/10000/structure_dict_unprocessed_10000.pkl
+  dict: 5w_pos.json
+  pos_masking: False
+  posmask: ./processing/posmask.json
+  pretrain_utils: False
+  model:
+    pointer_gen: False
+    dropout: 0.2
+    num_layer: 6
+    d_model: 512
+    d_ff: 2048
+    h: 8
+    tie_weights: False
+    d_bert: 768
+  eval:
+    beam_size: 3
+    block_ngram: 3
+
+
+pred_pos:
+  batch_size: 256
+  num_epoch: 300
+  warmup_steps: 4000
+  src_max_len: 35
+  max_len: 25
+  print_every_step: 500
+  valid_every_step: 10000
+  lr: 0.1
+  lr_init: 1.0e-6
+  noam_decay: True
+  optimizer: adam
+  
+  data_path: /share/home/timchen0618/data/weibo-stc/weibo_utf8/final_data_with_pos/align_data
+  # data_path: 
+  #corpus: ../../../../../transformer/one2one_data/pos_one2one_train_1w.tsv
+  corpus: ../../../../../transformer/one2one_data/pos_unprocessed_one2one_train.tsv
+  test_corpus: new_data_test_498_align.tsv 
+  # test_corpus: ../../../../../transformer/one2one_data/pos_unprocessed_one2one_test.tsv
+  valid_corpus: ../../../../../transformer/one2one_data/pos_unprocessed_one2one_valid.tsv
+  pos_dict_path: pos_unprocessed_structure_dict.pkl
+  dict: 5w_pos.json
+  pos_masking: False
+  posmask: ./processing/posmask.json
+  pretrain_utils: False
+  model:
+    pointer_gen: False
+    dropout: 0.3
+    num_layer: 6
+    d_model: 512
+    d_ff: 2048
+    h: 8
+    tie_weights: False
+  eval:
+    beam_size: 1
+    block_ngram: 0
+
+finetune:
+  batch_size: 64
+  num_epoch: 20
+  warmup_steps: 8000
+  src_max_len: 50
+  max_len: 20
+  lr_decay: 10
+  print_every_step: 5000
+  valid_every_step: 50000
+  lr: 1
+  lr_init: 1.0e-6
+  noam_decay: True
+  optimizer: adam
+
+  data_path: /share/home/timchen0618/data/weibo-stc/weibo_utf8/data_with_pos/align_data
+  corpus: pos_unprocessed_498_latent_train.tsv 
+  test_corpus: pos_unprocessed_498_latent_test.tsv 
+  valid_corpus: pos_unprocessed_498_latent_valid.tsv 
+  pos_dict_path: pos_unprocessed_structure_dict.pkl
+  dict: 5w_pos.json
+  pretrain_utils: False
+  model:
+    pointer_gen: False
+    dropout: 0.3
+    num_layer: 6
+    d_model: 512
+    d_ff: 2048
+    h: 8
+    tie_weights: False
+
+  eval:
+    beam_size: 3
+    block_ngram: 0
+
+
+joint_gen:
+  batch_size: 64
+  num_epoch: 20
+  warmup_steps: 8000
+  src_max_len: 30
+  max_len: 25
+  max_decode_step: 50
+  print_every_step: 500
+  valid_every_step: 25000
+  lr: 1
+  lr_init: 1.0e-6
+  noam_decay: True
+  optimizer: adam
+
+  data_path: /share/home/timchen0618/data/weibo-stc/weibo_utf8/final_data_with_pos/align_data/
+  # data_path: /share/home/timchen0618//data/weibo-stc/weibo_utf8/final_data_with_pos/meteor_data/10000
+  corpus: pos_unprocessed_498_train_align.tsv 
+  # test_corpus: 2stage.genpos.test
+  test_corpus: new_data_test_498_align.tsv
+  valid_corpus: pos_unprocessed_498_dev_align.tsv 
+  # valid_corpus: val.train.tsv
+  pos_dict_path: pos_unprocessed_structure_dict.pkl
+  # pos_dict_path: structure_dict_unprocessed_10000.pkl
+  dict: 5w_pos_sep.json
+  pos_masking: False
+  posmask: ./processing/posmask.json
+  pretrain_utils: False
+
+  greedy: False
+
+  model:
+    pointer_gen: False
+    dropout: 0.0
+    num_layer: 6
+    d_model: 512
+    d_ff: 2048
+    h: 8
+    tie_weights: False
+    d_bert: 768
+  eval:
+    beam_size: 1
+    block_ngram: 0
+
+
+
+
+
+
+
+
+
+# # python3 main.py -train \
+#   3         -model_dir train_model \
+#   4         -task joint_gen \
+#   5         -exp_name joint_gen_lr1_pre_drop00 \
+#   6         -model_type transformer \
+#   7         -w_valid_file valid.joint_gen_full.txt \
+#   8         -w_valid_tgt_file valid.tgt.txt \
+#   9         -pretrain_embedding /share/home/timchen0618/transformer/train_model/seq2seq/base_0619_drop02/119_w2.035721_model.pth
