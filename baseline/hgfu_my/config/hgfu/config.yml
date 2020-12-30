@@ -1,0 +1,33 @@
+print_every_step: 500
+valid_every_step: 20000
+num_epoch: 20
+batch_size: 256
+src_max_len: 30
+max_len: 20
+lr: 1.0e-3
+
+data_path: /share/home/timchen0618/data/weibo-stc/weibo_utf8/baseline_data
+corpus: seq2seq_top1.train.txt
+# test_corpus: new_data_test_498_align.tsv
+test_corpus: seq2seq_top1.test.txt
+# valid_corpus: pos_unprocessed_498_dev_align.tsv 
+valid_corpus: seq2seq_top1.valid.txt
+# valid_corpus: v.test
+dict: 5w_pos.json
+
+eval:
+  beam_size: 10
+
+
+models:
+  HGFU:
+    rnn_type: GRU
+    input_size: 620
+    embedding_size: 1000
+    hidden_size: 1000
+    encoder_num_layers: 1
+    decoder_num_layers: 1
+    dropout: 0.3
+    bidirectional: True
+    attn_type: dot
+
