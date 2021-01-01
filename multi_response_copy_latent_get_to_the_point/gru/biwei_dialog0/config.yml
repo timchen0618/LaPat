@@ -1,0 +1,99 @@
+Misc:
+  src_vocab_size: 50000
+  tgt_vocab_size: 50000
+  tag_vocab_size: 50000
+  random_seed: 3435
+  use_cuda: true
+
+Seq2Seq:
+  rnn_type: GRU
+  tie_weights: false
+  attn_type: general
+  shared_embedding_size: 620
+  tag_hidden_size: 1000
+  enc_hidden_size: 1000
+  dec_hidden_size: 1000
+  num_layers: 1
+  dropout: 0
+  bidirectional: true
+  feat_merge: concat
+  # Seq2Seq Train Opt
+  Trainer:
+    num_train_epochs: 10
+    steps_per_stats: 100
+    batch_size: 128
+    start_epoch_at:
+    optim_method: adam
+    learning_rate: 0.0002
+    max_grad_norm: 5
+    learning_rate_decay: 0.5
+    weight_decay: 0.000001
+    start_decay_at: 0
+    out_dir: ./out/seq2seq
+
+TagSampler:
+  tag_embedding_size: 620
+  rnn_type: GRU
+  enc_hidden_size: 1000
+  num_layers: 1
+  dropout: 0.3
+  bidirectional: true
+  # TagSampler Train Opt
+  Trainer:
+    num_train_epochs: 50
+    steps_per_stats: 100
+    batch_size: 256
+    start_epoch_at:
+    optim_method: adam
+    learning_rate: 0.002
+    max_grad_norm: 5
+    learning_rate_decay: 0.5
+    weight_decay: 0.000001
+    start_decay_at: 0
+    out_dir: ./out/sampler
+
+Seq2SeqWithRL:
+  # Seq2SeqWithRL Train Opt
+  Trainer:
+    num_train_epochs: 50
+    steps_per_stats: 100
+    batch_size: 1
+    start_epoch_at:
+    optim_method: sgd
+    steps_per_update_sampler: 10
+    seq2seq_lr: 0.001
+    sampler_lr: 0.001
+    max_grad_norm: 5
+    learning_rate_decay: 0.9
+    weight_decay: 0.000001
+    start_decay_at: 0
+    out_dir: ./out/rl
+  center_vector: './biwei-dialog0/5w_vectors.pkl'
+
+SentenceSampler:
+  tag_embedding_size: 620
+  rnn_type: GRU
+  enc_hidden_size: 1000
+  num_layers: 1
+  dropout: 0
+  bidirectional: true
+  post_length: 216890
+  max_tag_num: 12
+  padding_idx: 50000
+  clusters: 50001
+  vectors: ./data/vectors.pkl
+  label_type: single
+  output_size: 50001
+  # TagSampler Train Opt
+  Trainer:
+    num_train_epochs: 50
+    steps_per_stats: 100
+    batch_size: 256
+    start_epoch_at:
+    optim_method: adam
+    learning_rate: 0.003
+    max_grad_norm: 20
+    learning_rate_decay: 0.9
+    weight_decay: 0.00001
+    start_decay_at: 0
+    out_dir: ./out/sentence_sampler
